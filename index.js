@@ -1,7 +1,7 @@
 const express = require('express')
 const {Server} = require('ws')
 const app = express()
-app.use(express.static('./orpho-react/build'))
+app.use(express.static('./build'))
 const http = require('http')
 const server = http.createServer(app)
 const wsServer = new Server({server})
