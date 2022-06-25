@@ -14,7 +14,7 @@ wsServer.on('connection', (socket) =>
     sockets.add(socket)
     socket.on('message', (msg) =>
     {   
-       console.log(msg)
+
     })
 })
 app.post('/register', urlencodedParser, (req, res) =>
