@@ -19,7 +19,6 @@ wsServer.on('connection', (socket) =>
 })
 app.post('/register', urlencodedParser, (req, res) =>
 {
-    console.log(req.body)
-    res.send(req.body)
+    console.log(req.body.toString())
 })
 server.listen(process.env.PORT || 5000)
