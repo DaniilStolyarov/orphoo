@@ -1,26 +1,25 @@
 const express = require('express')
 const {Server} = require('ws')
 const app = express()
-app.use(express.static('./build'))
+app.use(process.env.PORT ? express.static('./build') : express.static('./orpho-react/build'))
 const http = require('http')
 const server = http.createServer(app)
 const wsServer = new Server({server})
+const Message = require('./Message')
+const bodyParser = require('body-parser')
 let sockets = new Set()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 wsServer.on('connection', (socket) =>
 {
     sockets.add(socket)
     socket.on('message', (msg) =>
     {   
-        const message = msg.toString()
-        if (message == 'ping')
-        {
-            socket.send('pong')
-            return
-        }
-        sockets.forEach(skt =>
-            {
-                skt.send(message)
-            })
+       console.log(msg)
     })
+})
+app.post('/register', urlencodedParser, (req, res) =>
+{
+    console.log(req.body)
+    res.send(req.body)
 })
 server.listen(process.env.PORT || 5000)
