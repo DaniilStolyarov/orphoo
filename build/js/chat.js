@@ -1,26 +1,43 @@
+
 var socket = new WebSocket(location.origin.replace(/^http/, 'ws'))
-socket.onmessage = (msg) =>
+const wsHandlers = 
 {
-    if (msg.data == 'pong')
+    pong(data)
     {
-        console.log(msg.data)
-        return
+        if (data == 'ping') 
+        {
+            console.log(data)
+        }
+    },
+    fetchMessage(data)
+    {
+        const {content, author, createDate} = data
+        if (!(content && author && createDate)) return;
+        const authorDOM = document.createElement('div')
+        authorDOM.className = 'author'
+        const contentDOM = document.createElement('div')
+        contentDOM.className = 'data'
+        const messageDOM = document.createElement('div')
+        messageDOM.className = 'message'
+        contentDOM.textContent = content
+        authorDOM.textContent = author || 'Анонимус'
+        message.append(author)
+        message.append(data)
+        document.querySelector('.view').prepend(message)
     }
-    const author = document.createElement('div')
-    author.className = 'author'
-    const data = document.createElement('div')
-    data.className = 'data'
-    const message = document.createElement('div')
-    message.className = 'message'
-    data.textContent = msg.data
-    author.textContent = 'Анонимус'
-    message.append(author)
-    message.append(data)
-    document.querySelector('.view').prepend(message)
+    
 }
 setInterval(() => {
     socket.send('ping')
 }, 10000);
+socket.onmessage = (data) =>
+{   
+    for (handler in wsHandlers)
+    {
+        handler(data)
+    }
+}
+
 [...document.getElementsByClassName('send')].forEach(send => 
     {
         const btn = send.querySelector('.msg-submit')
