@@ -4,7 +4,7 @@ const app = express()
 app.use(process.env.PORT ? express.static('./build') : express.static('./orpho-react/build'))
 const http = require('http')
 const server = http.createServer(app)
-const wsServer = new Server({server})
+const wsServer = new Server({server, maxPayload: 32*1024*1024})
 const Message = require('./Message')
 const bodyParser = require('body-parser')
 const formidable = require('express-formidable')
@@ -13,10 +13,16 @@ const db = require('./db')
 const {onMessage} = require('./wsEvents/message')
 const users = {}
 let sockets = new Set()
+
 wsServer.on('connection', (socket) =>
 {
     sockets.add(socket)
     socket.on('message', (data) => onMessage(data, socket, {sockets, users}))
+    socket.on('error', (err) =>
+    {
+        if (err.message == 'Max payload size exceeded') return
+        else console.log(err)
+    })
 })
 app.use(bodyParser.urlencoded({ extended: false }))
 app.post('/register', bodyParser.json(), async (req, res) =>
