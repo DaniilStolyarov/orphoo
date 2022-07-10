@@ -1,3 +1,4 @@
+xcopy \r \e orpho-react\build .\build\
 git add .
 git commit -m init
 git push heroku master
