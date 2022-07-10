@@ -25,12 +25,18 @@ function onMessage(data, socket, {sockets, users})
 module.exports.onMessage = onMessage
 const handlers = 
 {
-    chatMessage({content, key, image}, {users, sockets})
+    chatMessage({content, key, image}, {users, sockets, socket})
     {
         if (!(key in users)) return
         const nickname = users[key]
         for (let skt of sockets)
         {
+            if (skt === socket) 
+            {
+                skt.send(JSON.stringify({author : nickname, content, createDate : Date.now(), image, client : true}))
+                return 
+            }
+
             skt.send(
                 JSON.stringify({author : nickname, content, createDate : Date.now(), image}))
         }
