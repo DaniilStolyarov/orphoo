@@ -34,7 +34,7 @@ const handlers =
             if (skt === socket) 
             {
                 skt.send(JSON.stringify({author : nickname, content, createDate : Date.now(), image, client : true, messageKey}))
-                return 
+                continue
             }
 
             skt.send(
