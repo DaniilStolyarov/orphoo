@@ -83,7 +83,7 @@ server.listen(process.env.PORT || 5000)
 
 function checkDigitsLetters8_24(string)
 {
-    test = /^[A-Za-z0-9]{8,24}$/
+    test = /^[A-Za-zА-Яа-я0-9]{8,24}$/
     return string.match(test)
 }
 
