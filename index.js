@@ -1,3 +1,4 @@
+process.env.PORT = 80;
 const express = require('express')
 const {Server} = require('ws')
 const app = express()
