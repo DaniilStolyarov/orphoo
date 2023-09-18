@@ -2,7 +2,7 @@ process.env.PORT = 80;
 const express = require('express')
 const {Server} = require('ws')
 const app = express()
-app.use(/*process.env.PORT ? express.static('./build') : */express.static('./orpho-react/build'))
+app.use(/*process.env.PORT ? express.static('./build') : */express.static('./build'))
 const http = require('http')
 const server = http.createServer(app)
 const wsServer = new Server({server, maxPayload: 8*1024*1024})
